@@ -12,7 +12,7 @@ export class BilleteraVirtual extends MetodoPago implements Procesable {
     this.nombre = nombre;
     this.email = email;
     this.saldo = saldoInicial;
-    this.bonus = 0; //TODO: tal vez se saque todo lo del bonus o crear una condicion
+    this.bonus = 0; //TODO: lo que quiero es hacer reintegros por promos, ver como hacerlo
   }
 
   public getMontoDisponible(): number {

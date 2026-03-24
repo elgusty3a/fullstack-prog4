@@ -7,6 +7,7 @@ export class TarjetaCredito extends MetodoPago implements Procesable {
   private vencimiento: string;
   private limite: number;
   private disponible: number;
+  //TODO: ver fechas cierre y vencimiento controlar limites de compra en cuotas y cantidad de cuotas
 
   constructor(titular: string, numero: string, marca: string, vencimiento: string, limite: number ) {
     super(titular);
