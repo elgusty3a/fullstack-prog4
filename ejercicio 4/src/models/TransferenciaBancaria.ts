@@ -24,24 +24,21 @@ export class TransferenciaBancaria extends MetodoPago implements Procesable {
     this.saldo = saldoInicial;
   }
 
+  public getMontoDisponible(): number {
+    return this.saldo;
+  }
+
   public procesarPago(monto: number): boolean {
-    if (!this.activo) {
-      console.log(`❌ Cuenta inactiva`);
-      return false;
-    }
-    if (monto > this.saldo) {
-      console.log(`❌ Saldo insuficiente. Disponible: ${this.formatearMonto(this.saldo)}`);
-      return false;
-    }
-    if (monto <= 0) {
-      console.log(`❌ Monto inválido`);
+    const validacion = this.validarPago(monto);
+    if (!validacion.valido) {
+      console.log(validacion.mensaje);
       return false;
     }
 
     this.saldo -= monto;
     this.incrementarTransacciones();
-    console.log(`✅ Transferencia desde ${this.banco}: ${this.formatearMonto(monto)}`);
-    console.log(`   Nuevo saldo: ${this.formatearMonto(this.saldo)}`);
+    console.log(`Transferencia desde ${this.banco}: ${this.formatearMonto(monto)}`);
+    console.log(`\tNuevo saldo: ${this.formatearMonto(this.saldo)}`);
     return true;
   }
 
@@ -64,7 +61,7 @@ export class TransferenciaBancaria extends MetodoPago implements Procesable {
   public depositar(monto: number): void {
     if (monto > 0) {
       this.saldo += monto;
-      console.log(`💰 Depósito recibido: ${this.formatearMonto(monto)}`);
+      console.log(`Depósito recibido: ${this.formatearMonto(monto)}`);
     }
   }
 }

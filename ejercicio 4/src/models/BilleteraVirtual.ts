@@ -12,22 +12,17 @@ export class BilleteraVirtual extends MetodoPago implements Procesable {
     this.nombre = nombre;
     this.email = email;
     this.saldo = saldoInicial;
-    this.bonus = 0;
+    this.bonus = 0; //TODO: tal vez se saque todo lo del bonus o crear una condicion
+  }
+
+  public getMontoDisponible(): number {
+    return this.saldo + this.bonus;
   }
 
   public procesarPago(monto: number): boolean {
-    if (!this.activo) {
-      console.log(`❌ Billetera inactiva`);
-      return false;
-    }
-
-    const totalDisponible = this.saldo + this.bonus;
-    if (monto > totalDisponible) {
-      console.log(`Saldo insuficiente. Disponible: ${this.formatearMonto(totalDisponible)}`);
-      return false;
-    }
-    if (monto <= 0) {
-      console.log(`Monto inválido`);
+    const validacion = this.validarPago(monto);
+    if (!validacion.valido) {
+      console.log(validacion.mensaje);
       return false;
     }
 

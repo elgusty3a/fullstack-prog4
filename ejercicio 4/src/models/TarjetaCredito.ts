@@ -8,13 +8,7 @@ export class TarjetaCredito extends MetodoPago implements Procesable {
   private limite: number;
   private disponible: number;
 
-  constructor(
-    titular: string,
-    numero: string,
-    marca: string,
-    vencimiento: string,
-    limite: number
-  ) {
+  constructor(titular: string, numero: string, marca: string, vencimiento: string, limite: number ) {
     super(titular);
     this.numero = numero;
     this.marca = marca;
@@ -23,24 +17,23 @@ export class TarjetaCredito extends MetodoPago implements Procesable {
     this.disponible = limite;
   }
 
+  public getMontoDisponible(): number {
+    return this.disponible;
+  }
+
   public procesarPago(monto: number): boolean {
-    if (!this.activo) {
-      console.log(`❌ Tarjeta inactiva`);
-      return false;
-    }
-    if (monto > this.disponible) {
-      console.log(`❌ Límite insuficiente. Disponible: ${this.formatearMonto(this.disponible)}`);
-      return false;
-    }
-    if (monto <= 0) {
-      console.log(`❌ Monto inválido`);
+    const validacion = this.validarPago(monto);
+    if (!validacion.valido) {
+      console.log(validacion.mensaje);
       return false;
     }
 
     this.disponible -= monto;
     this.incrementarTransacciones();
-    console.log(`✅ Pago con tarjeta ${this.marca}: ${this.formatearMonto(monto)}`);
-    console.log(`   Nuevo disponible: ${this.formatearMonto(this.disponible)}`);
+    console.log(
+      `Pago con tarjeta ${this.marca}: ${this.formatearMonto(monto)}`,
+    );
+    console.log(`\tNuevo disponible: ${this.formatearMonto(this.disponible)}`);
     return true;
   }
 
@@ -58,6 +51,8 @@ export class TarjetaCredito extends MetodoPago implements Procesable {
 
   public recargarSaldo(monto: number): void {
     this.disponible = Math.min(this.disponible + monto, this.limite);
-    console.log(`💳 Saldo recargado. Nuevo disponible: ${this.formatearMonto(this.disponible)}`);
+    console.log(
+      `Saldo recargado. Nuevo disponible: ${this.formatearMonto(this.disponible)}`,
+    );
   }
 }
