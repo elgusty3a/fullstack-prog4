@@ -14,6 +14,7 @@ import { User } from './users/entities/user.entity';
       database: 'ej_nestjs',
       entities: [User],
       synchronize: true,
+      logging: true,
     }),
     UsersModule,
   ],
