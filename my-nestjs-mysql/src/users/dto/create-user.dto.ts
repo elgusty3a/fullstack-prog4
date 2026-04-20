@@ -1,13 +1,13 @@
 export class CreateUserDto {
   firstName: string;
   lastName: string;
-  birthDate: Date;
+  birthDate: string;
   email: string;
 
   constructor(
     fistName: string,
     lastName: string,
-    birthDate: Date,
+    birthDate: string,
     email: string,
   ) {
     this.firstName = fistName;
